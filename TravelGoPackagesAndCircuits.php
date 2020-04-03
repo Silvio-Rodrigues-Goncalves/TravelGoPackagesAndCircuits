@@ -65,18 +65,18 @@ function pacotes_function($array_param) {
 
 
 
-        $client_v2 = new SoapClient('https://v2.travelagent.com.br/EPAPI/PlatformAPI.svc?wsdl',$options);
+        $client_v2 = new SoapClient('https://epapi.travelagent.com.br/v3/PlatformAPI.svc?wsdl',$options);
 
 
 
 
         } catch (Exception $e) {
-          $client_v2 = new SoapClient('http://preprod-v2.travelagent.com.br/EPAPI/PlatformAPI.svc?wsdl',$options);
+          $client_v2 = new SoapClient('https://v2.travelagent.com.br/EPAPI/PlatformAPI.svc?wsdl',$options);
 
 
         }
 
-         $parametros = array('SignIn' => array('req' => array('Signature'=>'epapi@agaxtur.com.br', 'Password'=>'Agaxtur@17#')));
+         $parametros = array('SignIn' => array('req' => array('Signature'=>'epapi@rdcviagens.com.br', 'Password'=>'R|d|C.600*')));
 
          $dados_login_retornados = $client_v2->__soapCall('SignIn', $parametros);
 
@@ -125,8 +125,8 @@ function pacotes_function($array_param) {
           $retorno_FindLocations_IATA_ID =  get_findLocation($client_v2, $dados_login_retornados, "City", $item['cidades'][1], $HasIata, $ParentId);
 
 
-          $puro = array("https", "www.agaxturviagens");
-          $filtrado   = array("https", "parceiros.agaxturviagens");
+          $puro = array("https", "www.agencia.rdcviagensviagens");
+          $filtrado   = array("https", "agencia.rdcviagensviagens");
 
           $link_pacote_parceiros = str_replace($puro, $filtrado, $item['PackageDetailsURL']);
 
@@ -157,7 +157,7 @@ function pacotes_function($array_param) {
 
           if (strpos($link_pacote, 'Construido') !== false) {
 
-        $link_pacote = 'https://www.agaxturviagens.com.br/transacional/masterpricer?SearchType=Package&BeginDeparture='.$startDate[0].'&EndDeparture=28/12/2019&Origin=SAO&OriginId=275279&Destination='.$item['LocationIATA'].'&DestinationId='.$retorno_FindLocations_IATA_ID->Locations->LocationLight[0]->id.'&Ages=30,30&Construido=0';
+        $link_pacote = 'https://www.agencia.rdcviagensviagens.com.br/transacional/masterpricer?SearchType=Package&BeginDeparture='.$startDate[0].'&EndDeparture=28/12/2019&Origin=SAO&OriginId=275279&Destination='.$item['LocationIATA'].'&DestinationId='.$retorno_FindLocations_IATA_ID->Locations->LocationLight[0]->id.'&Ages=30,30&Construido=0';
 
 
       }
@@ -227,19 +227,22 @@ function pacotes_function($array_param) {
 
           // Layout1
           if($array_param["layout"] == "layout1" || $array_param["layout"] == ""){
-            $return_string .= "<a href='". $link_pacote_parceiros."' data-tags='".$item['KeyWords']."' class='produto ".$item['tipo_produto']." id-".$item['PackageConfigurationId']."'   style='background: transparent url(https://apgwvzblen.cloudimg.io/crop/250x298/webp-lossy-50/".$item['FullUrl'].") repeat scroll center center / cover' data-cache='".$atualiza_cache_a_cada."-".$hora.":".$minuto."'   data-preco='".str_replace(".","",$item['TotalAmountByPassenger'])."' >";
-         
-            $return_string .= "<span class='nome-produto'>".$item['Name']."<br><span class='descritivo-nome-produto'>".$item['descritivo']."</span></span>";
-            if($item['tipo_produto'] == "Tour"){
-              $return_string .= "<span class='a-partir-de'>A partir de: <br>por apto</span>";
-            }else{
-              $return_string .= "<span class='a-partir-de'>A partir de: <br>por pessoa</span>";
-            }
-            
-            $return_string .= "<span class='preco'>".$item['Tipomoeda']. " " .$item['TotalAmountByPassenger']."</span>";
-            $return_string .= "<span class='noites'>".$item['NightsQuantity']." Noites</span>";
-            $return_string .= "</a>";
-          }
+                    $return_string .= "<a href='". $link_pacote_parceiros."' data-tags='".$item['KeyWords']."' class='produto ".$item['tipo_produto']." id-".$item['PackageConfigurationId']."'   style='background: transparent url(https://apgwvzblen.cloudimg.io/crop/250x298/webp-lossy-50/".$item['FullUrl'].") repeat scroll center center / cover' data-cache='".$atualiza_cache_a_cada."-".$hora.":".$minuto."'   data-preco='".str_replace(".","",$item['TotalAmountByPassenger'])."' >";
+                    $return_string .= "<span class='noites'>".$item['NightsQuantity']." Noites</span>";
+                    $return_string .= "<span class='nome-produto'>".$item['Name']."<br><span class='descritivo-nome-produto'>".$item['descritivo']."</span></span>";
+                    if($item['tipo_produto'] == "Tour"){
+                        $return_string .= "<span class='a-partir-de'>A partir de:</span>";
+                    }else{
+                        $return_string .= "<span class='a-partir-de'>A partir de:</span>";
+                    }
+                    $return_string .= "<span class='preco'>".$item['Tipomoeda']. " " .$item['TotalAmountByPassenger']."</span>";
+                    if($item['tipo_produto'] == "Tour"){
+                        $return_string .= "<span class='a-by'>por apto</span>";
+                    }else{
+                        $return_string .= "<span class='a-by'>por pessoa</span>";
+                    }
+                    $return_string .= "</a>";
+                }
 
 
         }
@@ -411,7 +414,7 @@ else  {
 
         $array_destinos_listados_produto = array_unique($array_destinos_listados_produto);
 
-        $array_produtos[$count_produtos]["FullUrl"] = "https://www.agaxturviagens.com.br/wp-content/uploads/2016/09/no-image.png";
+        $array_produtos[$count_produtos]["FullUrl"] = "https://www.agencia.rdcviagensviagens.com.br/wp-content/uploads/2016/09/no-image.png";
         $array_produtos[$count_produtos]["LocationIATA"] = "";
 
         $array_produtos[$count_produtos]['chamada-do-preco'] = "A partir de ";
@@ -457,7 +460,7 @@ else  {
 
 
 
-        $array_produtos[$count_produtos]['PackageDetailsURL'] = 'https://www.agaxturviagens.com.br/transacional/masterpricer?SearchType=Tour&StartDate='.$startDate[0].'&EndDate='.$endDate[0].'&ServiceId='.$tour_id.'&PassengerRooms=0,0&Ages=30,30#v42';
+        $array_produtos[$count_produtos]['PackageDetailsURL'] = 'https://www.agencia.rdcviagensviagens.com.br/transacional/masterpricer?SearchType=Tour&StartDate='.$startDate[0].'&EndDate='.$endDate[0].'&ServiceId='.$tour_id.'&PassengerRooms=0,0&Ages=30,30#v42';
 
         $array_produtos[$count_produtos]["Name"] = $circuitos_services->Name;
 
@@ -633,7 +636,7 @@ else  {
                   else {
 
 
-                     $array_produtos[$count_produtos]["FullUrl"] = "https://www.agaxturviagens.com.br/wp-content/uploads/2016/09/no-image.png";
+                     $array_produtos[$count_produtos]["FullUrl"] = "https://www.agencia.rdcviagensviagens.com.br/wp-content/uploads/2016/09/no-image.png";
                      $array_produtos[$count_produtos]["Title img"] = $primary_image->Title;
 
                   }
@@ -646,9 +649,9 @@ else  {
                      $PriceSummary = $PackageConfigurationNight->PriceSummaries->PackageConfigurationNightPriceSummary[0];
 
 
-                     $array_produtos[$count_produtos]["PackageDetailsURL"] = $PriceSummary->PackageDetailsURL != "" ? "https://www.agaxturviagens.com.br". $PriceSummary->PackageDetailsURL : 'Construido';
+                     $array_produtos[$count_produtos]["PackageDetailsURL"] = $PriceSummary->PackageDetailsURL != "" ? "https://www.agencia.rdcviagensviagens.com.br". $PriceSummary->PackageDetailsURL : 'Construido';
 
-                      $array_produtos[$count_produtos]["link_produto"] = $PriceSummary->PackageDetailsURL != "" ? "https://www.agaxturviagens.com.br". $PriceSummary->PackageDetailsURL : "#2";
+                      $array_produtos[$count_produtos]["link_produto"] = $PriceSummary->PackageDetailsURL != "" ? "https://www.agencia.rdcviagensviagens.com.br". $PriceSummary->PackageDetailsURL : "#2";
 
 
                     $array_produtos[$count_produtos]['disponivel_class'] = "indisponivel"; //Sem preco, oculta
